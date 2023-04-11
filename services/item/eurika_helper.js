@@ -53,7 +53,7 @@ export default {
         { headers: { "Content-Type": "application/json" } }
       )
       .then(() => {
-        console.log(`Registered with Eureka.`);
+        console.log(`[${process.pid}] Registered with Eureka.`);
         setInterval(() => {
           axios
             .put(
@@ -61,12 +61,22 @@ export default {
               {},
               { headers: { "Content-Type": "application/json" } }
             )
-            .then(() => console.log("Successfully sent heartbeat to Eureka."))
-            .catch(() => console.log("Sending heartbeat to Eureka failed."));
+            .then(() =>
+              console.log(
+                `[${process.pid}] Successfully sent heartbeat to Eureka.`
+              )
+            )
+            .catch(() =>
+              console.log(
+                `[${process.pid}] Sending heartbeat to Eureka failed.`
+              )
+            );
         }, 50 * 1000);
       })
       .catch((error) =>
-        console.log(`Not registered with eureka due to: ${error}`)
+        console.log(
+          ` [${process.pid}] Not registered with eureka due to: ${error}`
+        )
       );
   },
   /**
