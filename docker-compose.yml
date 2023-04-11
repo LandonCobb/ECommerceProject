@@ -15,7 +15,8 @@ services:
       - gateway
     networks:
       - ecommerce-network
-  gateway: # GATEWAY SERVICE *********************************
+  gateway:
+    # GATEWAY SERVICE *********************************
     restart: always
     build: .
     volumes:
@@ -34,12 +35,13 @@ services:
       - mongo
     networks:
       - ecommerce-network
-  item-service: # ITEM SERVICE **************************
+  item-service:
+    # ITEM SERVICE **************************
     restart: always
     build:
       context: ./services/item/
     volumes:
-      - C:\A neumont\Q7\SBCA\ECommerceProject\services\item://usr/src/app
+      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\services\item://usr/src/app
       - /usr/src/app/node_modules/
     deploy:
       mode: replicated
@@ -55,7 +57,8 @@ services:
     depends_on:
       - mongo
       - registry
-  registry: # Netflix Eureka server **************
+  registry:
+    # Netflix Eureka server **************
     container_name: registry
     build:
       context: ./services/svc-registry/
@@ -65,7 +68,8 @@ services:
       - "8761:8761"
     networks:
       - ecommerce-network
-  mongo: # MongoDB ********************************
+  mongo:
+    # MongoDB ********************************
     container_name: mongo
     image: mongo:latest
     deploy:
@@ -78,10 +82,11 @@ services:
     ports:
       - "8989:27017"
     volumes:
-      - C:\A neumont\Q7\SBCA\ECommerceProject\data://data/db
+      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\data://data/db
     networks:
       - ecommerce-network
-  nginx: # GATEWAY Load Balancer ***************************
+  nginx:
+    # GATEWAY Load Balancer ***************************
     image: nginx:latest
     container_name: gateway-load-balancer
     volumes:
@@ -99,7 +104,8 @@ services:
       - 9090:9090
     networks:
       - ecommerce-network
-networks: # Network ****************************************
+networks:
+  # Network ****************************************
   ecommerce-network:
     name: ecommerce-network
     external: false
