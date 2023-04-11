@@ -1,4 +1,4 @@
-package cobb.carter.registry;
+package cobb.landon.registry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
