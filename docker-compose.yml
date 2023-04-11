@@ -1,0 +1,106 @@
+version: "3.9"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - .://usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - 7777:3000
+    depends_on:
+      - gateway
+    networks:
+      - ecommerce-network
+  gateway: # GATEWAY SERVICE *********************************
+    restart: always
+    build: .
+    volumes:
+      - .://usr/src/app
+      - /usr/src/app/node_modules/
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 512M
+        reservations:
+          memory: 128M
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce-network
+  item-service: # ITEM SERVICE **************************
+    restart: always
+    build:
+      context: ./services/item/
+    volumes:
+      - C:\A neumont\Q7\SBCA\ECommerceProject\services\item://usr/src/app
+      - /usr/src/app/node_modules/
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+        reservations:
+          memory: 64M
+    links:
+      - mongo
+    depends_on:
+      - mongo
+      - registry
+  registry: # Netflix Eureka server **************
+    container_name: registry
+    build:
+      context: ./services/svc-registry/
+      dockerfile: DockerFile
+    ports:
+      - "8080:8080"
+      - "8761:8761"
+    networks:
+      - ecommerce-network
+  mongo: # MongoDB ********************************
+    container_name: mongo
+    image: mongo:latest
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+        reservations:
+          memory: 64M
+    ports:
+      - "8989:27017"
+    volumes:
+      - C:\A neumont\Q7\SBCA\ECommerceProject\data://data/db
+    networks:
+      - ecommerce-network
+  nginx: # GATEWAY Load Balancer ***************************
+    image: nginx:latest
+    container_name: gateway-load-balancer
+    volumes:
+      - /nginx-conf:/etc/nginx/conf.d
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1024M
+        reservations:
+          memory: 512M
+    depends_on:
+      - gateway
+    ports:
+      - 9090:9090
+    networks:
+      - ecommerce-network
+networks: # Network ****************************************
+  ecommerce-network:
+    name: ecommerce-network
+    external: false
+    driver: bridge
