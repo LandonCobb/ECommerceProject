@@ -93,7 +93,7 @@ services:
     image: nginx:latest
     container_name: gateway-load-balancer
     volumes:
-      - /nginx-conf:/etc/nginx/conf.d
+      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\nginx-conf:/etc/nginx/conf.d
     deploy:
       resources:
         limits:
