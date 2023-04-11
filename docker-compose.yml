@@ -41,7 +41,7 @@ services:
     build:
       context: ./services/item/
     volumes:
-      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\services\item://usr/src/app
+      - ${HOST_PATH}\services\item://usr/src/app
       - /usr/src/app/node_modules/
     deploy:
       mode: replicated
@@ -85,7 +85,7 @@ services:
     ports:
       - "8989:27017"
     volumes:
-      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\data://data/db
+      - ${HOST_PATH}\data://data/db
     networks:
       - ecommerce-network
   nginx:
@@ -93,7 +93,7 @@ services:
     image: nginx:latest
     container_name: gateway-load-balancer
     volumes:
-      - C:\Users\Carter Cobb\Documents\Z_Projects\ECommerceProject\nginx-conf:/etc/nginx/conf.d
+      - ${HOST_PATH}\nginx-conf:/etc/nginx/conf.d
     deploy:
       resources:
         limits:
