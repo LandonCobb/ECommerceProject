@@ -3,10 +3,11 @@ import Eurika from "../eurika_helper.js";
 
 export default [
   {
-    url: "/:service/*",
+    url: ":service/*",
     action: nsr.HTTPAction.GET,
     handlers: [
       async (req, res) => {
+        console.log("getting something");
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.get(
           `/${req.path.split("/").slice(2).join("/")}`,
@@ -17,7 +18,7 @@ export default [
     ],
   },
   {
-    url: "/:service/*",
+    url: ":service/*",
     action: nsr.HTTPAction.POST,
     handlers: [
       async (req, res) => {
@@ -31,7 +32,7 @@ export default [
     ],
   },
   {
-    url: "/:service/*",
+    url: ":service/*",
     action: nsr.HTTPAction.PUT,
     handlers: [
       async (req, res) => {
@@ -45,7 +46,7 @@ export default [
     ],
   },
   {
-    url: "/:service/*",
+    url: ":service/*",
     action: nsr.HTTPAction.DELETE,
     handlers: [
       async (req, res) => {
