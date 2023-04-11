@@ -14,13 +14,13 @@ app.use(json({ limit: "50mb", extended: true }));
 app.use(cors());
 
 app.use((req, _, next) => {
-  console.log(req);
+  console.log(`[${process.pid}] ${req.method} ${req.url}`);
   next();
 });
 
 app.options("*", cors());
 
-nsr.RouteFactory.applyRoutesTo(app);
+nsr.RouteFactory.applyRoutesTo(app, { log_configured: true });
 
 app.get("/", (req, res) => {
   return res.status(200).json({ message: "hello world" });
