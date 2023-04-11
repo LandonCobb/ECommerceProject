@@ -24,7 +24,7 @@ export default {
       (x) => x.name.toLowerCase() === name.toLowerCase()
     );
     if (instances) {
-      const client = Resilient({ service: { basePath: "/api" } });
+      const client = Resilient();
       const servers = instances.instance.map((x) => `http://${x.ipAddr}:1000`);
       client.setServers(servers);
       return client;
