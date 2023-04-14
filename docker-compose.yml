@@ -43,15 +43,63 @@ services:
     volumes:
       - ${HOST_PATH}\services\item://usr/src/app
       - /usr/src/app/node_modules/
-    deploy:
-      mode: replicated
-      replicas: 2
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
-        reservations:
-          memory: 64M
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: "0.25"
+    #       memory: 128M
+    #     reservations:
+    #       memory: 64M
+    links:
+      - mongo
+    depends_on:
+      - mongo
+      - registry
+    networks:
+      - ecommerce-network
+  cart-service:
+    # CART SERVICE **************************
+    restart: always
+    build:
+      context: ./services/cart/
+    volumes:
+      - ${HOST_PATH}\services\cart://usr/src/app
+      - /usr/src/app/node_modules/
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: "0.25"
+    #       memory: 128M
+    #     reservations:
+    #       memory: 64M
+    links:
+      - mongo
+    depends_on:
+      - mongo
+      - registry
+    networks:
+      - ecommerce-network
+  order-service:
+    # ORDER SERVICE **************************
+    restart: always
+    build:
+      context: ./services/order/
+    volumes:
+      - ${HOST_PATH}\services\order://usr/src/app
+      - /usr/src/app/node_modules/
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: "0.25"
+    #       memory: 128M
+    #     reservations:
+    #       memory: 64M
     links:
       - mongo
     depends_on:

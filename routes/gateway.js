@@ -7,7 +7,6 @@ export default [
     action: nsr.HTTPAction.GET,
     handlers: [
       async (req, res) => {
-        console.log("getting something");
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.get(
           `/${req.path.split("/").slice(2).join("/")}`,
@@ -38,6 +37,20 @@ export default [
       async (req, res) => {
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.put(
+          `/${req.path.split("/").slice(2).join("/")}`,
+          { data: req.body, params: req.params }
+        );
+        return res.status(data.status).json(data.data);
+      },
+    ],
+  },
+  {
+    url: ":service/*",
+    action: nsr.HTTPAction.PATCH,
+    handlers: [
+      async (req, res) => {
+        const service = await Eurika.getClientByName(req.params.service);
+        const data = await service.patch(
           `/${req.path.split("/").slice(2).join("/")}`,
           { data: req.body, params: req.params }
         );
