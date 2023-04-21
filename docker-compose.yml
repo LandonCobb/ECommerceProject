@@ -35,6 +35,30 @@ services:
       - mongo
     networks:
       - ecommerce-network
+  auth-service:
+    # AUTH SERVICE **************************
+    restart: always
+    build:
+      context: ./services/auth/
+    volumes:
+      - ${HOST_PATH}\services\auth://usr/src/app
+      - /usr/src/app/node_modules/
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: "0.25"
+    #       memory: 128M
+    #     reservations:
+    #       memory: 64M
+    links:
+      - mongo
+    depends_on:
+      - mongo
+      - registry
+    networks:
+      - ecommerce-network
   item-service:
     # ITEM SERVICE **************************
     restart: always

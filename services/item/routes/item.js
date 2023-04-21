@@ -1,5 +1,6 @@
 import * as nsr from "node-server-router";
 import { ItemModel } from "../models/item.js";
+import { requireAuth } from "../middleware.js";
 
 export default [
   {
@@ -7,8 +8,12 @@ export default [
     action: nsr.HTTPAction.GET,
     handlers: [
       async (req, res) => {
-        const items = await ItemModel.find().lean();
-        return res.status(200).json(items);
+        try {
+          const items = await ItemModel.find().lean();
+          return res.status(200).json(items);
+        } catch {
+          return res.sendStatus(400);
+        }
       },
     ],
   },
@@ -17,8 +22,12 @@ export default [
     action: nsr.HTTPAction.GET,
     handlers: [
       async (req, res) => {
-        const item = await ItemModel.findById(req.params._id).lean();
-        return res.status(200).json(item);
+        try {
+          const item = await ItemModel.findById(req.params._id).lean();
+          return res.status(200).json(item);
+        } catch {
+          return res.status(404).json(null);
+        }
       },
     ],
   },
@@ -26,9 +35,14 @@ export default [
     url: "item",
     action: nsr.HTTPAction.POST,
     handlers: [
+      requireAuth,
       async (req, res) => {
-        await ItemModel.create(req.body);
-        return res.sendStatus(201);
+        try {
+          const item = await ItemModel.create(req.body);
+          return res.status(201).json(item);
+        } catch {
+          return res.sendStatus(400);
+        }
       },
     ],
   },
@@ -36,9 +50,14 @@ export default [
     url: "items",
     action: nsr.HTTPAction.POST,
     handlers: [
+      requireAuth,
       async (req, res) => {
-        req.body.forEach(async (item) => await ItemModel.create(item));
-        return res.sendStatus(201);
+        try {
+          req.body.forEach(async (item) => await ItemModel.create(item));
+          return res.sendStatus(201);
+        } catch {
+          return res.sendStatus(400);
+        }
       },
     ],
   },
@@ -46,13 +65,18 @@ export default [
     url: "item/:_id",
     action: nsr.HTTPAction.PATCH,
     handlers: [
+      requireAuth,
       async (req, res) => {
-        const item = await ItemModel.findByIdAndUpdate(
-          { _id: req.params._id },
-          { $set: { ...req.body } },
-          { runValidators: true, new: true, upsert: false }
-        );
-        return res.status(200).json(item);
+        try {
+          const item = await ItemModel.findByIdAndUpdate(
+            { _id: req.params._id },
+            { $set: { ...req.body } },
+            { runValidators: true, new: true, upsert: false }
+          );
+          return res.status(200).json(item);
+        } catch {
+          return res.sendStatus(400);
+        }
       },
     ],
   },
@@ -60,9 +84,14 @@ export default [
     url: "item/:_id",
     action: nsr.HTTPAction.DELETE,
     handlers: [
+      requireAuth,
       async (req, res) => {
-        await ItemModel.deleteOne({ _id: req.params._id });
-        return res.sendStatus(204);
+        try {
+          await ItemModel.deleteOne({ _id: req.params._id });
+          return res.sendStatus(204);
+        } catch {
+          return res.sendStatus(400);
+        }
       },
     ],
   },

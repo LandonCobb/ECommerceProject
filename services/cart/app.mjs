@@ -3,6 +3,7 @@ import * as nsr from "node-server-router";
 import cors from "cors";
 import mongoose from "mongoose";
 import Eurika from "./eurika_helper.js";
+import { CartModel } from "./models/cart.js";
 
 const connectToDB = () =>
   mongoose.connect("mongodb://mongo:27017", {
@@ -20,9 +21,10 @@ app.use(cors());
 app.options("*", cors());
 nsr.RouteFactory.applyRoutesTo(app, { log_configured: true });
 connectToDB().catch(connectToDB);
-mongoose.connection.on("connected", () =>
-  console.log(`[${process.pid}] Connected to MongoDB`)
-);
+mongoose.connection.on("connected", () => {
+  console.log(`[${process.pid}] Connected to MongoDB`);
+  CartModel.collection.createIndex({ expires: 1 }, { expireAfterSeconds: 0 });
+});
 mongoose.connection.on("error", (e) => console.log(`[${process.pid}] ${e}`));
 Eurika.registerWithEureka("cart", 1000);
 app.use((req, _, next) => {

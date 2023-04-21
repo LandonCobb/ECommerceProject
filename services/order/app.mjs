@@ -3,6 +3,7 @@ import * as nsr from "node-server-router";
 import cors from "cors";
 import mongoose from "mongoose";
 import Eurika from "./eurika_helper.js";
+import { requireAuth } from "./middleware.js";
 
 const connectToDB = () =>
   mongoose.connect("mongodb://mongo:27017", {
@@ -29,6 +30,7 @@ app.use((req, _, next) => {
   console.log(`[${process.pid}] ${req.method} ${req.url}`);
   next();
 });
+app.use(requireAuth);
 app.listen(1000, () =>
   console.log(`[${process.pid}] Listening on port ${1000}`)
 );

@@ -10,7 +10,7 @@ export default [
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.get(
           `/${req.path.split("/").slice(2).join("/")}`,
-          { params: req.params }
+          { params: {...req.params, authorization: req.headers.authorization || null} }
         );
         return res.status(data.status).json(data.data);
       },
@@ -24,7 +24,7 @@ export default [
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.post(
           `/${req.path.split("/").slice(2).join("/")}`,
-          { data: req.body, params: req.params }
+          { data: req.body, params: {...req.params, authorization: req.headers.authorization || null} }
         );
         return res.status(data.status).json(data.data);
       },
@@ -38,7 +38,7 @@ export default [
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.put(
           `/${req.path.split("/").slice(2).join("/")}`,
-          { data: req.body, params: req.params }
+          { data: req.body, params: {...req.params, authorization: req.headers.authorization || null} }
         );
         return res.status(data.status).json(data.data);
       },
@@ -52,7 +52,7 @@ export default [
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.patch(
           `/${req.path.split("/").slice(2).join("/")}`,
-          { data: req.body, params: req.params }
+          { data: req.body, params: {...req.params, authorization: req.headers.authorization || null} }
         );
         return res.status(data.status).json(data.data);
       },
@@ -66,7 +66,7 @@ export default [
         const service = await Eurika.getClientByName(req.params.service);
         const data = await service.delete(
           `/${req.path.split("/").slice(2).join("/")}`,
-          { params: req.params }
+          { params: {...req.params, authorization: req.headers.authorization || null} }
         );
         return res.status(data.status).json(data.data);
       },

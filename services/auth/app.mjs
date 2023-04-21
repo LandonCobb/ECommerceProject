@@ -9,6 +9,7 @@ const connectToDB = () =>
     dbName: "ecommerce",
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    autoIndex: true
   });
 
 const { json, urlencoded } = express;
@@ -24,7 +25,7 @@ mongoose.connection.on("connected", () =>
   console.log(`[${process.pid}] Connected to MongoDB`)
 );
 mongoose.connection.on("error", (e) => console.log(`[${process.pid}] ${e}`));
-Eurika.registerWithEureka("item", 1000);
+Eurika.registerWithEureka("auth", 1000);
 app.use((req, _, next) => {
   console.log(`[${process.pid}] ${req.method} ${req.url}`);
   next();

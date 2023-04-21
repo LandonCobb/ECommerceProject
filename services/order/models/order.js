@@ -8,11 +8,10 @@ const orderSchema = new Schema({
         required: [true, "cart is required"]
     },
     user: {
-        type: {},
-        required: [true, "user is required"],
-        default: {}
+        type: String,
+        required: [true, "user is required"]
     }
 }, {timestamps: true})
 
-export const ItemModel = model("ORDER", orderSchema);
+export const OrderModel = model("ORDER", orderSchema);
 
