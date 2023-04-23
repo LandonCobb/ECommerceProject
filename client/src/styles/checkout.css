@@ -1,0 +1,18 @@
+.checkout-main { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.checkout-button-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.checkout-button-bar button {
+    margin: 4px;
+}

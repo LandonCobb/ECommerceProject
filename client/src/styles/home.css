@@ -1,0 +1,40 @@
+.header {
+    height: 75px;
+    background: lightgray;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+     height: 300px;
+     width: 250px;
+     margin: 15px;
+     border: solid 1px lightgray;
+     border-radius: 8px; 
+}
+
+.drawer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.drawer-card {
+    width: 100%;
+}
